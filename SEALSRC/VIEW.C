@@ -1026,9 +1026,13 @@ void  view_draw_view ( p_view o )
 void  view_draw_sub_views ( p_view o, p_view from, p_view to )
 {
    p_view s = from;
-   p_view f = VIEW(OBJECT(o)->first_view(OBJECT(o)));
+   p_view f = NULL;
 
-   if ( !f ) return;
+   if ( !o || !from) return;
+
+   f = VIEW(OBJECT(o)->first_view(OBJECT(o)));
+
+   if ( !f || !o || !from) return;   
 
    if ( !to ) to = from;
 

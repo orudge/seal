@@ -42,6 +42,8 @@
 #include"dialogs.h"
 #include"editor.h"
 #include"iodlg.h"
+#include <dos.h>
+#include <time.h>
 
 /* text declarations */
 
@@ -127,7 +129,7 @@ void    redraw_title ( void )
 
       if ( current_file )
 
-         WINDOW(edit)->caption = set_format_text(NULL, "SmallDit - %s", current_file);
+         WINDOW(edit)->caption = set_format_text(NULL, "SmallDit - %s", get_filename(current_file));
 
       else
 
@@ -306,10 +308,41 @@ static t_point smalldit_size_minimum ( p_view o )
 
 };
 
+void  status_func_callback ( p_object s ) /* it's call each second */
+{
+
+
+     TEXTLINE(s)->set_text(TEXTLINE(s),
+                               set_format_text(NULL, "[%03d:%03d] [len:%05d] %s",
+                               EDITOR(editor)->line, EDITOR(editor)->line_pos,
+                               strlen(EDITOR(editor)->text),
+                               current_file?current_file:TXT_NONAME
+                               ));
+
+};
+
+void  timer_func_callback ( p_object s ) /* it's call each second */
+{
+
+     time_t now = time (NULL);
+     struct tm *t = localtime (&now);
+     l_text buf = _malloc(100);
+     if (!buf) return;
+     /* Print today's date e.g. "January 31, 2001".  */
+     strftime (buf, 100, "%a %b %e %H:%M:%S %Y", t);
+
+
+
+     TEXTLINE(s)->set_text(TEXTLINE(s), buf);
+
+};
+
+
 
 void  init_smalldit ( void )
 {
-
+   p_textline status = NULL;
+   p_textline status2 = NULL;
    t_rect r = rect_assign(0, 100, 540, 400);
    t_rect s;
 
@@ -330,7 +363,7 @@ void  init_smalldit ( void )
 
    s = r = VIEW(edit)->size_limits(VIEW(edit));
 
-   r = rect_assign(r.a.x, r.a.y+1, r.a.x, r.a.y+20);
+   r = rect_assign(r.a.x, r.a.y+1, r.a.x+20, r.a.y+20);
 
    menu = hormenu_init(_malloc(sizeof(t_menuview)), /* make menu bar */
                        r,
@@ -338,7 +371,7 @@ void  init_smalldit ( void )
 
    OBJECT(edit)->insert(OBJECT(edit), OBJECT(menu));
 
-   r = rect_assign(r.a.x+1, r.b.y+7, s.b.x-STANDARD_SCROLLBAR_WIDTH, s.b.y-STANDARD_SCROLLBAR_WIDTH);
+   r = rect_assign(r.a.x+1, r.b.y+7, s.b.x-STANDARD_SCROLLBAR_WIDTH, s.b.y-STANDARD_SCROLLBAR_WIDTH - 30);
 
    editor = editor_init(_malloc(sizeof(t_editor)), /* make editor */
                         r,
@@ -347,6 +380,40 @@ void  init_smalldit ( void )
    VIEW(editor)->align |= TX_ALIGN_BOTTOM+TX_ALIGN_RIGHT;
 
    OBJECT(edit)->insert(OBJECT(edit), OBJECT(editor));
+
+   r = rect_assign(s.a.x + 10, s.b.y-20, s.b.x, s.b.y);
+
+   status = dyntext_init ( _malloc(sizeof(t_textline)),
+                            r,
+                            300);
+
+   OBJECT(status)->func_callback = &status_func_callback;
+
+
+   OBJECT(edit)->insert(OBJECT(edit), OBJECT(status));
+
+   status->set_text(status, "Hallo");
+
+   init_stillprocess ( OBJECT(status), 100 );
+
+   r = rect_assign(s.a.x + 200, s.a.y+1, s.b.x-20, s.a.y+20);
+
+   status2 = dyntext_init ( _malloc(sizeof(t_textline)),
+                            r,
+                            300);
+
+   OBJECT(status2)->func_callback = &timer_func_callback;
+
+   status2->flags |= TX_ALIGN_RIGHT;
+
+
+   OBJECT(edit)->insert(OBJECT(edit), OBJECT(status2));
+
+   status2->set_text(status2, "Hallo");
+
+   init_stillprocess ( OBJECT(status2), 1000 );
+
+   
 
 };
 
