@@ -1,0 +1,13 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+   LIBEXPORT(taskbar_translate_event)
+   LIBEXPORT(taskbar_func_callback)
+   LIBEXPORT(taskbar_draw_taskbar)
+   LIBEXPORT(taskbar_draw)
+   LIBEXPORT(get_num_of_windows)
+   LIBEXPORT(_taskbar_init) 
+   LIBEXPORT(taskbar_init) 
+  LIBEXPORT_END
+DLXUSE_END
