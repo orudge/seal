@@ -4,7 +4,11 @@
 
       florianx@drdos.org
 
+      Updates by Owen Rudge, 23/4/2001
+      orudge@freeuk.com * www.owenrudge.co.uk
+
       SFA extended sound library for SEAL
+      Bad Seal compatible version
 
       License: GPL
 
@@ -25,8 +29,8 @@
 #define TXT_CANNOTINITSOUNDCARD  INI_TEXT("Cannot init the soundcard: %s\n\nPlease edit seal.cfg!")
 #define TXT_CANNOTINITSOUNDINPUT INI_TEXT("Cannot install sound input: %s ")
 
-
-
+//#define SHOW_INFO // does not work with Bad Seal
+#define DO_SEARCH
 
 /* sound format item functions */
 
@@ -351,6 +355,9 @@ l_int init_file (p_play o, l_text file)
           p_item x = sound_format_list->first(sound_format_list);
           p_item f = x;
           signed int ok = 0;
+          l_text pfile = _strdup(file);
+          l_int used_l = 0;
+          
 
           o->used_library = 0;
 
@@ -360,7 +367,7 @@ l_int init_file (p_play o, l_text file)
           
 //            seal_error(ERR_INFO, "searching: %s found", ((p_soundformat_item)x->rec)->extension);
 
-            if (!stricmp( ((p_soundformat_item)x->rec)->extension , get_extension(file) ))
+            if (!stricmp( ((p_soundformat_item)x->rec)->extension , get_extension(pfile) ))
                {
                o->used_library = (p_soundformat_item)x->rec;               
 //               seal_error(ERR_INFO, "Extension found: %s Used_library: %d Found_library: %d", ((p_soundformat_item)x->rec)->extension,
@@ -384,9 +391,12 @@ l_int init_file (p_play o, l_text file)
 
 
 //          seal_error(ERR_INFO, "Want to play file #2 [%s]", file);
-          
-          return (o->used_library)->init_file(o->used_library, file);
+          used_l = (o->used_library)->init_file(o->used_library, pfile);
+
           }
+
+          if (pfile) _free(pfile);
+          
 
 //          else
 
@@ -394,7 +404,7 @@ l_int init_file (p_play o, l_text file)
 
          
 
-         return 0;
+         return used_l;
 
       };
 
@@ -819,14 +829,14 @@ int  ff_walker(const char* path, const struct ffblk *ff)
 
 
        
-       if ( !run_file (path) )
+       if ( !run_file ((l_char *) path) )
 
                      seal_error(ERR_INFO, "%s\n\n%s", "Cannot run file :(", path);
 
 
        DEBUG_printf("\ndlxsound:");
        DEBUG_printf(" Loaded SFA driver:");
-       DEBUG_printf(path);
+       DEBUG_printf((l_char *) path);
        DEBUG_printf("\n");
 
 
@@ -862,7 +872,9 @@ int  ff_walker(const char* path, const struct ffblk *ff)
 void find_sfa(l_text path)
 {
 //            seal_error(ERR_INFO, "Try to run all files from: %s", path);
+#ifdef DO_SEARCH
             __file_tree_walk(path, ff_walker);
+#endif
             
 /*           if (errno)
              seal_error(ERR_INFO, "Error: No SFA files found (%s)", path);*/
@@ -929,8 +941,10 @@ lib_begin ( void ) {
 
      
 
+#ifdef SHOW_INFO
       p = show_info(0, MW_INFO, TXT_INITSOUNDCARD);
-      
+#endif
+
       DEBUG_printf("Sound init: init sound...\n");
       
       /* reserve_voice is very important !!!!! (mod player)*/
@@ -941,7 +955,9 @@ lib_begin ( void ) {
 
       if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, "") == -1)
           {
+#ifdef SHOW_INFO
           hide_info(p);
+#endif
           sound_installed = false;
           seal_error(ERR_INFO, TXT_CANNOTINITSOUNDCARD, allegro_error);
           DEBUG_printf(allegro_error);
@@ -976,7 +992,9 @@ lib_begin ( void ) {
 
       find_sfa(path);
 
+#ifdef SHOW_INFO
       hide_info(p);
+#endif
       if (path) _free(path);
 
 

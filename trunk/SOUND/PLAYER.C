@@ -20,6 +20,11 @@ p_list get_player_filelist ( void ) {
      p->insert(p, new_filehistory_item("MPEG Layer 2/3 (*.mp?)", "*.mp?"));
      p->insert(p, new_filehistory_item("MIDI (*.mid)", "*.mid"));
      p->insert(p, new_filehistory_item("MOV (*.mov)", "*.mov"));
+     p->insert(p, new_filehistory_item("MOD (*.mod)", "*.mod"));
+     p->insert(p, new_filehistory_item("MOD - XM (*.xm)", "*.xm"));
+     p->insert(p, new_filehistory_item("MOD - IT (*.it)", "*.it"));
+     p->insert(p, new_filehistory_item("MOD - S3M (*.s3m)", "*.s3m"));
+     p->insert(p, new_filehistory_item("MOD - JGM (*.jgm)", "*.jgm"));
 //     p->insert(p, new_filehistory_item("(*.)", "*."));
      p->insert(p, new_filehistory_item("All files (*.*)", "*.*"));
 
@@ -33,7 +38,6 @@ p_list get_player_filelist ( void ) {
 
 
 void play(l_text file) {
-
 
 //     seal_error(ERR_INFO, "Want to play file [%s]", file);
 
@@ -59,7 +63,7 @@ void  poll_func_callback ( p_object s ) /* it's call each second */
 };
 
 
-void  player_translate_event ( p_object o, p_event e )
+void  player_translate_event ( p_object o, t_event *e )
 {
 
    RETVIEW(o, e);
@@ -118,7 +122,7 @@ app_begin ( void ) {
     p_object o = 0;
     p_object stat = 0;
     p_textline stat1 = 0;
-    char file[260];
+    l_text file=0;
 
     AP_SETNUMOFCALLS(1);
 
@@ -130,11 +134,12 @@ app_begin ( void ) {
 
 
 
-    if ( !ap_args ) ap_args = open_dialog("c:/", NULL, get_player_filelist());
+    if ( !ap_args ) file = open_dialog("c:/", NULL, get_player_filelist());
+    else file = _strdup(ap_args);
 
-    if ( !ap_args ) return;
+    if ( !file ) return;
 
-    strcpy(file, ap_args);
+
 
     pp = SFA_init();
 
@@ -142,12 +147,14 @@ app_begin ( void ) {
 
     play(file);
 
+    _free(file);
+
     r = rect_assign(0, 0, 400, 100);
 
 
     o = appwin_init(malloc(sizeof(t_appwin)), /* make window */
                             r,
-                            "sfa player .05 beta",
+                            "SFA Player .06 Beta",
 //                            ap_args,
                             0x0,
                             ap_id, /* application id */
@@ -163,9 +170,9 @@ app_begin ( void ) {
      stat = stattext_init ( malloc(sizeof(t_stattext)),
 					 r, 
 					 TX_ALIGN_LEFT, // limit
-					 "Playing %s ...\n%s",
-                (char *) get_filename(ap_args),
-                (char *) pp->get_additional_info(pp));
+					 "Playing %s...\n%s",
+                (l_text) get_filename(ap_args),
+                (l_text) pp->get_additional_info(pp));
 
      OBJECT(stat)->func_callback = &poll_func_callback;
      OBJECT(o)->insert(OBJECT(o), OBJECT(stat));
@@ -178,17 +185,17 @@ app_begin ( void ) {
      
       r = rect_assign(10, 70, 190, 90);
 
-     stat1 = textline_init( _malloc(sizeof(t_textline)),
+     stat1 = dyntext_init( _malloc(sizeof(t_textline)),
                             r,
-                            255,
-                            TF_REWRITEUNABLE);
+                            255
+                            );
 
      OBJECT(stat1)->func_callback = &stat1_func_callback;
 
 
      OBJECT(o)->insert(OBJECT(o), OBJECT(stat1));
 
-     stat1->set_text(stat1, "Wellcome!");
+     stat1->set_text(stat1, "Welcome!");
 
      init_stillprocess ( OBJECT(stat1), 1000 );
 

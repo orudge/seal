@@ -9,7 +9,7 @@
 
    signed int mid_pause = false;
    l_int old_zeit = 0;
-   l_text filename;
+   l_text filename = 0;
    MIDI *midi_sample = 0;
    volatile int zeit = 0;
 
