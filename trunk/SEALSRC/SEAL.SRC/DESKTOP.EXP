@@ -1,0 +1,20 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(menu_load_from_dir) 
+    LIBEXPORT(filemenu_trans) 
+    LIBEXPORT(desktop_size_limits) 
+    LIBEXPORT(desktopline_size_limits) 
+    LIBEXPORT(desktopline_remove) 
+    LIBEXPORT(desktopline_insert) 
+    LIBEXPORT(desktopline_draw) 
+    LIBEXPORT(desktopline_refresh_place) 
+    LIBEXPORT(_desktopline_init) 
+    LIBEXPORT(desktopline_translate_event) 
+    LIBEXPORT(desktopline_genbutton) 
+    LIBEXPORT(program_valid) 
+    LIBEXPORT(desktopline_init) 
+    LIBEXPORT(draw_under_line) 
+  LIBEXPORT_END
+DLXUSE_END
