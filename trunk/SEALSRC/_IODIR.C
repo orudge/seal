@@ -51,7 +51,7 @@ p_drives drives = NULL;
 #define BUFFER_FILE_COPY   2048  /* greater size is higher speed */
 #endif
 
-static drv_buf[2] = {0, '\0'};
+static l_char drv_buf[2] = {0, '\0'}; // fixed florianx
 
 static p_drives drive_cur = NULL;
 
@@ -164,9 +164,10 @@ void    free_tfile ( void *p )
        _free(((t_file*)p)->filename);
        _free(((t_file*)p)->path);
 
+       _free(p);
+
    };
 
-   _free(p);
 
 };
 
