@@ -29,10 +29,8 @@
           _free(filename);
           }
 
-         filename = (l_text)malloc(260);
+         filename = _strdup(file);
          
-         strcpy(filename, file);
-
 //         seal_error(ERR_INFO, "filename: %s, file: %s", filename, file);
 
          if (install_amp() == FALSE)
