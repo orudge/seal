@@ -1,0 +1,182 @@
+CHANGES
+=======
+
+All dates are in DD/MM/YYYY format.
+
+SEAL 2.00.11
+------------
+
+Released:
+
+- Directory structure reorganised
+
+- Makefile builds everything
+
+- New version of SFA
+
+- WAV driver for SFA
+
+- Checkboxes now skinned, as well as windows and buttons (more controls will be
+  supported soon)
+
+- Allegro 4.0.1 now used
+
+- Everything updated and improved a bit
+
+- Friendly title read from .ln files and displayed in Programs menu instead of filename minus
+  extension
+
+- New startup logo, by Phil Harper
+
+- seal2_app_about function - common About dialog
+
+- Klondike now included, as well as updated versions of other games and an updated CARDS.XDL
+  (datafile appended to XDL, instead of being seperate)
+
+- Snake added to Games menu (needs to be finished though)
+
+- Made stattext controls transparent if skins enabled, and fixed other skin-related
+  issues
+
+- Alex Levitsky's Disk Imager now included with SEAL (note: please see docs/bugs.txt)
+
+- Plus many other bug fixes and updates
+
+SEAL 2.00.10 (Lambda)
+---------------------
+
+Released: 01/12/2001
+
+- More translatable texts
+
+- 2 new games ported and optimised (15 and Tower of Hanoi)
+
+- t_view improvements 
+   - better transparency
+   - use of 2nd buffer for transparency
+   - none, flat, light 3d or large 3d border managed by t_view
+   - t_view can draw border
+
+- t_trackbar added (vertical + horizontal)
+
+- Control Panel improvements
+   - Can add sections
+   - In panels list, each can have a 16x16 icon
+   - You can open Control Panel on a panel or a section you want
+
+- New registry
+   - Dynamic size & Dynamic loading
+   - Real delete
+
+- Makefile + Code reorganisation
+
+- t_tabbook added
+
+- drag & drop added to t_editor
+
+- Smalldit when close file ask only if the file have been edited
+
+- better taskbar (few improvements)
+
+- a few other improvements
+
+SEAL 2.00.9 (Kappa)
+-------------------
+
+Released: 02/11/2001
+
+- New Control Panel
+
+- 4 Games ported (Tic-Tac-Tic, Minesweeper, Laby, Snake)
+
+- New registry -> data cached in memory -> load at startup, saved at shut down 
+
+- Few vdev improvements + new controls
+
+- Nice startup :) (if transparency and 2nd buffer and bpp >= 16) 
+
+- New text cursor in t_editor and t_textline -> 1px width & blink (if control selected)
+
+- Syntax coloration from Michal (Seal 1D) added to VDEV
+
+- Screensaver system added + Screensaver chooser in Control Panel
+
+- Color selector added to control panel
+
+- ICO and CUR loading improved -> buffer!
+
+SEAL 2.00.008 (Iota)
+--------------------
+
+Released: 25/10/2001
+
+- Updated Allegro (3.9.39 15-10-2001) 
+
+- Compressed XDL (CXDL) created!
+   - Automatically decompressed by kernel
+   - Compression via DLXGEN
+
+- Low colors resolution support (8bpp) (with bitmaps optimisation)
+
+- Seal Image Manipulation Program port (still works!)
+
+- Visual DEVelopement improvement (events editor, property list, etc)
+
+- Few optimisations 
+
+- Fewer font sizes loaded (most programs use 8, 10, 20) -> faster startup!
+
+- DOSLFN driver added (long file name support in plain dos mode)
+
+- Double-buffer screen (used by view resize) (unavailable for low memory computers)
+
+- Desktop icons position is saved
+
+SEAL 2.00.007 (Theta)
+---------------------
+
+Released: 11/10/2001
+
+- New XDL format
+   - Info have been deleted from header and just replace by pointers to data -> keep space
+   - Can run DLX 2 and 3
+
+- Desktop 5
+   - Taskbar
+   - Userbox (tray)
+   - Icons in desktop
+   - Bar position can be changed
+
+- Skin selector (with preview)
+
+- Some bugs fixed
+
+- CD Player
+
+SEAL 2.00.006 (Eta)
+-------------------
+
+Released: 6/10/2001
+
+- UNDERSEL activation
+
+- Update of Image Viewer
+
+- Update of SFA
+
+- Drag and Drop activation
+
+- Quick links
+
+- Some bugs fixed
+
+SEAL 2.00.005 (Zeta)
+--------------------
+
+- Transparent menus (with tool to set level)
+
+- Add link support (.ln)
+
+- Some bugs fixed
+
+No changelog was used before this date.

@@ -1,0 +1,6 @@
+; This file contains a list of every extra function that will added to
+; ALLEGRO.EXP.
+;
+; Lines beginning with ; will be ignored.
+split_modex_screen
+i_love_bill
