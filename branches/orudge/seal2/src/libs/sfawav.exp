@@ -1,0 +1,24 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(wave_init_driver)
+    LIBEXPORT(wave_init_file)
+    LIBEXPORT(wave_play_file)
+    LIBEXPORT(wave_poll_file)
+    LIBEXPORT(wave_stop_file)
+    LIBEXPORT(wave_pause_file)
+    LIBEXPORT(wave_forward_file)
+    LIBEXPORT(wave_rewind_file)
+    LIBEXPORT(wave_set_pos)
+    LIBEXPORT(wave_get_pos)
+    LIBEXPORT(wave_get_len_file)
+    LIBEXPORT(wave_get_file_info)
+    LIBEXPORT(wave_get_friendly_name)
+    LIBEXPORT(wave_config_driver)
+    LIBEXPORT(wave_display_about)
+    LIBEXPORT(wave_close_file)
+    LIBEXPORT(wave_terminate_driver)
+    LIBEXPORT(wave_send_custom_message)
+  LIBEXPORT_END
+DLXUSE_END

@@ -1,0 +1,38 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(imgfilters)
+    LIBEXPORT(free_imgfilter)
+    LIBEXPORT(add_imgfilter)
+    LIBEXPORT(new_imgfilter)
+    LIBEXPORT(getimgfilter)
+    LIBEXPORT(init_imgfilters)
+
+    LIBEXPORT(imgedit_draw)
+    LIBEXPORT(imgedit_save)
+    LIBEXPORT(imgedit_load)
+    LIBEXPORT(imgedit_newbmp)
+    LIBEXPORT(imgedit_translate_event)
+    LIBEXPORT(imgedit_settop)
+    LIBEXPORT(imgedit_update_mouse)
+    LIBEXPORT(imgedit_update_mouse_cursor)
+    LIBEXPORT(imgedit_get_x_y)
+    LIBEXPORT(imgedit_update_status)
+    LIBEXPORT(imgedit_make_it_sel)
+    LIBEXPORT(imgedit_pcopy_act)
+    LIBEXPORT(imgedit_change_select_mode)
+    LIBEXPORT(imgedit_undo_add)
+    LIBEXPORT(imgedit_undo)
+
+    LIBEXPORT(colsel2_draw)
+    LIBEXPORT(colsel2_translate_event)
+
+    LIBEXPORT(_colsel2_init)
+    LIBEXPORT(colsel2_init)
+
+    LIBEXPORT(_imgedit_init)
+    LIBEXPORT(imgedit_init)
+
+  LIBEXPORT_END
+DLXUSE_END
