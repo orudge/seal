@@ -1,0 +1,859 @@
+<html>
+<head>
+<title>Sound Player Api documentation</title>
+</head>
+<body>
+<H1>Sound Player Api documentation</H1>
+
+This document describes the functions of my library.
+It                   is                   created                   with
+<a href="http://members.xoom.com/stropea/setedit.html">SET-Editor</a>     from
+<a href="dlxsound.c">dlxsound.c</a>. For developers: please use SDG to update
+the documentation from the source
+
+<p>
+
+Copyright(c)
+<a href="mailto:florianx@drdos.org">Florian Xaver</a> 2000
+
+<Menu>
+<li><a href="#Alphabetical List">Alphabetical list of functions</a>
+<li><a href="#Funktion">List by funktions</a>
+<li><a href="#Prototype">List by prototype</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Alphabetical List"></a>
+<H1>Alphabetical List</H1>
+
+<Menu>
+<li><a href="#dec_count_player">dec_count_player</a>
+<li><a href="#forward_file">forward_file</a>
+<li><a href="#get_additional_info">get_additional_info</a>
+<li><a href="#get_count_player">get_count_player</a>
+<li><a href="#get_info">get_info</a>
+<li><a href="#get_len_file">get_len_file</a>
+<li><a href="#get_pos">get_pos</a>
+<li><a href="#get_seal_volume">get_seal_volume</a>
+<li><a href="#get_sound_input_installed">get_sound_input_installed</a>
+<li><a href="#get_time">get_time</a>
+<li><a href="#inc_count_player">inc_count_player</a>
+<li><a href="#init_file">init_file</a>
+<li><a href="#is_stereo">is_stereo</a>
+<li><a href="#new_soundformat_item">new_soundformat_item</a>
+<li><a href="#pause_file">pause_file</a>
+<li><a href="#play_file">play_file</a>
+<li><a href="#poll_file">poll_file</a>
+<li><a href="#rewind_file">rewind_file</a>
+<li><a href="#set_pos">set_pos</a>
+<li><a href="#set_seal_volume">set_seal_volume</a>
+<li><a href="#SFA_init">SFA_init</a>
+<li><a href="#stop_file">stop_file</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Funktion"></a>
+<H1>Funktion</H1>
+
+<Menu>
+<li><a href="#dlxsound.c">dlxsound.c</a>
+</Menu>
+
+
+<p><hr></p>
+<a name="dlxsound.c"></a>
+<H1>dlxsound.c</H1>
+
+
+
+<Menu>
+<li><a href="#dec_count_player">dec_count_player</a>
+<li><a href="#forward_file">forward_file</a>
+<li><a href="#get_additional_info">get_additional_info</a>
+<li><a href="#get_count_player">get_count_player</a>
+<li><a href="#get_info">get_info</a>
+<li><a href="#get_len_file">get_len_file</a>
+<li><a href="#get_pos">get_pos</a>
+<li><a href="#get_seal_volume">get_seal_volume</a>
+<li><a href="#get_sound_input_installed">get_sound_input_installed</a>
+<li><a href="#get_time">get_time</a>
+<li><a href="#inc_count_player">inc_count_player</a>
+<li><a href="#init_file">init_file</a>
+<li><a href="#is_stereo">is_stereo</a>
+<li><a href="#new_soundformat_item">new_soundformat_item</a>
+<li><a href="#pause_file">pause_file</a>
+<li><a href="#play_file">play_file</a>
+<li><a href="#poll_file">poll_file</a>
+<li><a href="#rewind_file">rewind_file</a>
+<li><a href="#set_pos">set_pos</a>
+<li><a href="#set_seal_volume">set_seal_volume</a>
+<li><a href="#SFA_init">SFA_init</a>
+<li><a href="#stop_file">stop_file</a>
+</Menu>
+
+
+
+<p><hr></p>
+<a name="Prototype"></a>
+<H1>Prototype</H1>
+
+<Menu>
+</Menu>
+
+
+
+
+<p><hr></p>
+<a name="new_soundformat_item"></a>
+<center><Font Size=+2>new_soundformat_item</Font> (dlxsound.c 86)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ new_soundformat_item(l_text extension, l_text info, l_int (*init_file)(p_soundformat_item o, l_text file),l_int (*play_file)(p_soundformat_item o),l_int (*poll_file)(p_soundformat_item o),l_int (*stop_file)(p_soundformat_item o),l_int (*pause_file)(o),(*);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a library: Stores all funktions in a list
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+p_soundformat_item
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+p_soundformat_item k = new_soundformat_item(("mp3"),
+                                                     ("(c) Florian Xaver GNU GPL - virtual sound file"),
+                                                     &mp3_init_file,
+                                                     &mp3_play_file,
+                                                     &mp3_poll_file,
+                                                     &mp3_stop_file,
+                                                     &mp3_pause_file,
+                                                     &mp3_forward_file,
+                                                     &mp3_rewind_file,
+                                                     &mp3_set_pos,
+                                                     &mp3_get_pos,
+                                                     &mp3_get_len_file,
+                                                     &mp3_get_time,
+                                                     &mp3_is_stereo,
+                                                     &mp3_get_additional_info
+                                                     );
+
+           sound_format_list-&gt;insert(sound_format_list, k);
+<p>
+
+
+<p><hr></p>
+<a name="SFA_init"></a>
+<center><Font Size=+2>SFA_init</Font> (dlxsound.c 267)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ SFA_init();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: Init SFA in a player. Must be executed before playing a file.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+p_play
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+p_play pp = SFA_init();
+<p>
+
+
+<p><hr></p>
+<a name="init_file"></a>
+<center><Font Size=+2>init_file</Font> (dlxsound.c 312)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ init_file(p_play o, l_text file);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+Init the file
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+0 if error
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+p_play pp = 0;
+               pp-&gt;init_file(pp, file)
+<p>
+
+
+<p><hr></p>
+<a name="play_file"></a>
+<center><Font Size=+2>play_file</Font> (dlxsound.c 380)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ play_file(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: plays the file (must be init)
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+0 if error
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;play_file(pp)
+<p>
+
+
+<p><hr></p>
+<a name="poll_file"></a>
+<center><Font Size=+2>poll_file</Font> (dlxsound.c 402)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ poll_file(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: Must be called very often!
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+0 if file finished
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+file_is_playing = pp-&gt;poll_file(pp);
+<p>
+
+
+<p><hr></p>
+<a name="stop_file"></a>
+<center><Font Size=+2>stop_file</Font> (dlxsound.c 422)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ stop_file(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: stop playing the file
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;stop_file(pp);
+<p>
+
+
+<p><hr></p>
+<a name="pause_file"></a>
+<center><Font Size=+2>pause_file</Font> (dlxsound.c 443)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ pause_file(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: pauses the file
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;pause(pp);
+<p>
+
+
+<p><hr></p>
+<a name="forward_file"></a>
+<center><Font Size=+2>forward_file</Font> (dlxsound.c 464)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ forward_file(p_play o, l_int relpos);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: Set relative position (forward)
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;forward_file(pp, 10);
+<p>
+
+
+<p><hr></p>
+<a name="rewind_file"></a>
+<center><Font Size=+2>rewind_file</Font> (dlxsound.c 485)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ rewind_file(p_play o, l_int relpos);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: Set relative position (rewind)
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;rewind_file(pp, 10);
+<p>
+
+
+<p><hr></p>
+<a name="set_pos"></a>
+<center><Font Size=+2>set_pos</Font> (dlxsound.c 506)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ set_pos(p_play o, l_int pos);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: Sets position in the file
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+pp-&gt;set_pos(pp, 1000);
+<p>
+
+
+<p><hr></p>
+<a name="get_pos"></a>
+<center><Font Size=+2>get_pos</Font> (dlxsound.c 527)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_pos(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: gets position
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+position in the file
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+position = pp-&gt;get_position(pp);
+<p>
+
+
+<p><hr></p>
+<a name="get_len_file"></a>
+<center><Font Size=+2>get_len_file</Font> (dlxsound.c 548)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_len_file(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: gets len of file
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+len of file
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+len_of_file = pp-&gt;get_len_file(pp);
+<p>
+
+
+<p><hr></p>
+<a name="get_info"></a>
+<center><Font Size=+2>get_info</Font> (dlxsound.c 571)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_info(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: get info of file (string), you can free it with _free();
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+char * string;
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+l_text info = pp-&gt;get_info(pp);
+               ...
+               _free(info);
+<p>
+
+
+<p><hr></p>
+<a name="get_time"></a>
+<center><Font Size=+2>get_time</Font> (dlxsound.c 592)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_time(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: gets current time in seconds
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+time in seconds
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+current_time = pp-&gt;get_time(pp);
+<p>
+
+
+<p><hr></p>
+<a name="is_stereo"></a>
+<center><Font Size=+2>is_stereo</Font> (dlxsound.c 614)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ is_stereo(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: is the file stereo, or mono?
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+1...stereo, 0...mono
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+file_stereo = pp-&gt;is_stereo(pp);
+<p>
+
+
+<p><hr></p>
+<a name="get_additional_info"></a>
+<center><Font Size=+2>get_additional_info</Font> (dlxsound.c 635)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_additional_info(p_play o);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+for a player: gets additional info (use _free() to free it)
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+char *, l_text
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+l_text add_info = pp-&gt;get_additional_info(pp);
+<p>
+
+
+<p><hr></p>
+<a name="get_sound_input_installed"></a>
+<center><Font Size=+2>get_sound_input_installed</Font> (dlxsound.c 662)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_sound_input_installed();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+&gt;1 if sound input is installed
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+
+<p>
+
+
+<p><hr></p>
+<a name="inc_count_player"></a>
+<center><Font Size=+2>inc_count_player</Font> (dlxsound.c 679)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ inc_count_player();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+If your player starts a file you have to call it.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+inc_count_player();
+<p>
+
+
+<p><hr></p>
+<a name="dec_count_player"></a>
+<center><Font Size=+2>dec_count_player</Font> (dlxsound.c 696)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ dec_count_player();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+If your player stops playing a file you have to execute it.
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+void
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+dec_count_player();
+<p>
+
+
+<p><hr></p>
+<a name="get_count_player"></a>
+<center><Font Size=+2>get_count_player</Font> (dlxsound.c 713)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_count_player();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+how many files are playing
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+
+<p>
+
+
+<p><hr></p>
+<a name="get_seal_volume"></a>
+<center><Font Size=+2>get_seal_volume</Font> (dlxsound.c 730)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ get_seal_volume();
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+current volume (0...255)
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+volume = get_seal_volume();
+<p>
+
+
+<p><hr></p>
+<a name="set_seal_volume"></a>
+<center><Font Size=+2>set_seal_volume</Font> (dlxsound.c 747)</center>
+
+<Font Size=+1><u>Syntax</u></Font><p>
+
+
+
+<pre>
+ set_seal_volume(l_int s_v);
+</pre>
+
+
+
+
+<Font Size=+1><u>Description</u></Font><p>
+
+you can set the sound volume (0...255)
+<p>
+
+
+<Font Size=+1><u>Return Value</u></Font><p>
+
+returns volume of seal
+<p>
+
+
+<Font Size=+1><u>Example</u></Font><p>
+
+set_seal_volume(255);
+<p>
+
+
+
+
+</body>
+</html>

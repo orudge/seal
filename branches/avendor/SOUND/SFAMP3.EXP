@@ -1,0 +1,21 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(mp3_init_file) 
+    LIBEXPORT(mp3_play_file) 
+    LIBEXPORT(mp3_poll_file) 
+    LIBEXPORT(mp3_stop_file) 
+    LIBEXPORT(mp3_pause_file) 
+    LIBEXPORT(mp3_forward_file) 
+    LIBEXPORT(mp3_rewind_file) 
+    LIBEXPORT(mp3_set_pos) 
+    LIBEXPORT(mp3_get_pos) 
+    LIBEXPORT(mp3_get_len_file) 
+    LIBEXPORT(mp3_get_time) 
+    LIBEXPORT(mp3_pause)
+    LIBEXPORT(PausedPos) 
+    LIBEXPORT(filename) 
+    LIBEXPORT(sound_format_list) 
+  LIBEXPORT_END
+DLXUSE_END

@@ -1,0 +1,26 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(midi_init_file) 
+    LIBEXPORT(midi_play_file) 
+    LIBEXPORT(midi_poll_file) 
+    LIBEXPORT(midi_stop_file) 
+    LIBEXPORT(midi_pause_file) 
+    LIBEXPORT(midi_forward_file) 
+    LIBEXPORT(midi_rewind_file) 
+    LIBEXPORT(midi_set_pos) 
+    LIBEXPORT(midi_get_pos) 
+    LIBEXPORT(midi_get_len_file) 
+    LIBEXPORT(midi_get_time) 
+    LIBEXPORT(midi_is_stereo) 
+    LIBEXPORT(midi_get_additional_info) 
+    LIBEXPORT(time_process) 
+    LIBEXPORT(time_process_end) 
+    LIBEXPORT(mid_pause)
+    LIBEXPORT(zeit) 
+    LIBEXPORT(filename) 
+    LIBEXPORT(old_zeit) 
+    LIBEXPORT(midi_sample) 
+  LIBEXPORT_END
+DLXUSE_END
