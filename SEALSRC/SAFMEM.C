@@ -51,7 +51,7 @@ void     tag_strcpy ( void *dst, void *src, l_int size )
 
 l_int   tag_stricmp ( void *dst, void *src )
 {
-  if ( dst && src ) return stricmp(dst, src);
+  return stricmp(dst, src);
 };
 
 
@@ -79,6 +79,7 @@ void  sf_free ( void *rec )
 {
 
   if ( rec ) free(rec);
+  rec = 0;
 
 };
 
@@ -86,7 +87,8 @@ void  sf_free ( void *rec )
 void  sf_cfree ( void *rec )
 {
 
-  cfree(rec);
+  if (rec) cfree(rec);
+  rec = 0;
 
 };
 

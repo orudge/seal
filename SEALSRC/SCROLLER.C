@@ -215,7 +215,6 @@ void   vscrollbar_draw_bar ( p_vscrollbar o )
 {
   p_view  vo = VIEW(o);
   t_rect  r = vo->size_limits(vo);
-  t_rect  s = r;
   t_point p;
 
   l_rect  pos  = o->get_bar_pos(o);
@@ -629,7 +628,7 @@ l_bool   scroller_done ( p_object o )
 
   if ( SCROLLER(o)->horbar )
 
-    SCROLLER(o)->horbar = HSCROLLBAR(dispose(OBJECT(SCROLLER(o)->verbar)));
+    SCROLLER(o)->horbar = HSCROLLBAR(dispose(OBJECT(SCROLLER(o)->horbar))); // fixed 27.05.2001 florianx
 
 
   return view_done(o);
@@ -716,8 +715,11 @@ void   scroller_background ( p_view o, BITMAP *out, t_rect r )
 {
   if ( o->brush.background ) {
 
-    t_rect i = {0, 0, IMAGE_WIDTH(o->brush.background),
-                      IMAGE_HEIGHT(o->brush.background)};
+    t_rect i = rect_assign(0,
+                           0,
+                           IMAGE_WIDTH(o->brush.background) ,
+                           IMAGE_HEIGHT(o->brush.background)
+                           );                      
 
     r.a.x -= SCROLLER(o)->scrollx;
     r.a.y -= SCROLLER(o)->scrolly;
@@ -965,7 +967,6 @@ void   scroller_scroll_place ( p_scroller o, l_long dx, l_long dy, l_bool aft_mo
      t_rect  d = rect_assign(pt.x+s.a.x, pt.y+s.a.y, pt.x+s.b.x+1, pt.y+s.b.y+1);
 
      l_int   i = 0;
-     l_int   i2 = 0;
 
      VIEW(o)->set_clips(VIEW(o), s);
 

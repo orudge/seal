@@ -1589,7 +1589,7 @@ void  editor_redraw_text ( p_editor o, l_long newline, l_long newpos, l_int keyc
 
                      else
 
-                     if ( o->sel_from.b.y == o->sel_old.y )
+                     if ( o->sel_from.b.y == o->sel_old.y )  {
 
                            if ( o->sel_from.a.y == o->sel_from.b.y )
 
@@ -1599,13 +1599,15 @@ void  editor_redraw_text ( p_editor o, l_long newline, l_long newpos, l_int keyc
 
                                  o->sel_from.b.x = o->sel_old.x;
 
+                     }
+
                      if ( o->sel_from.a.y < o->sel_old.y )
 
                             o->sel_from.a.x = o->line_pos;
 
                      else
 
-                     if ( o->sel_from.a.y == o->sel_old.y )
+                     if ( o->sel_from.a.y == o->sel_old.y ) {
 
                             if ( o->sel_from.a.y == o->sel_from.b.y )
 
@@ -1614,6 +1616,7 @@ void  editor_redraw_text ( p_editor o, l_long newline, l_long newpos, l_int keyc
                             else
 
                                  o->sel_from.a.x = o->sel_old.x;
+                     }
 
                };
 

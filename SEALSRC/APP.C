@@ -441,7 +441,7 @@ p_appwin  _message_init_ex ( p_object owner, p_appwin o, t_rect r, l_text captio
   t.b.x -= be;
 
   /* get icon of dialog box ( from app.dlx end of file) */
-  img = (iflag<MI_ICONS)?(BITMAP*)GET_DATA(datfile, iflag):NULL;
+  img = (iflag<MI_ICONS)?(BITMAP*)GET_DATA(datfile, iflag):(BITMAP*)NULL;
 
 
   /* ok, stattext exist => enough memory */
@@ -783,7 +783,7 @@ p_appwin msginfo_arg ( l_rect minx, l_dword wflags, l_text in_text, va_list args
 
     w = message_init_ex(OBJECT(desktop), w, r, capt, WF_MINSIZE, iflag, 0, NULL, in_text, args);
 
-    delay(500);
+    rest(500);   // delay from Allegro
 
   };
 

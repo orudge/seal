@@ -32,17 +32,13 @@
 
 /*
 
+12.01.2001 Florian Xaver
+
 25.12.2000 Florian Xaver
 + support of PNG files
 + added "convert to ..." into the menu
 + added scrollbars to show all of the pictures
 */
-
-
-
-
-
-
 
 #include"allegro.h"
 #include"seal.h"
@@ -74,8 +70,6 @@
 #ifndef TXT_CLOSEBYALTF4
 #define TXT_CLOSEBYALTF4    INI_TEXT("Close By Alt+F4")
 #endif
-#ifndef TXT_EXPORT
-#endif
 #ifndef TXT_IMAGEISCONVRTINGINTOFILE
 #define TXT_IMAGEISCONVRTINGINTOFILE   INI_TEXT("Image is converting into file")
 #endif
@@ -83,13 +77,7 @@
 #define TXT_PLEASEWAIT   INI_TEXT("Please wait...")
 #endif
 
-static BITMAP *image = NULL;
-
-
-l_text dc_standard_path1 = "c:/";
-
-
-
+#define STANDARD_PATH  "c:/"
 #define MSG_VIEWF   10001
 #define MSG_EDITF   10002
 #define MSG_COPYF   10003
@@ -104,10 +92,11 @@ l_text dc_standard_path1 = "c:/";
 #define TXT_CANTRUNFILE        INI_TEXT("Can't run file")
 #endif
 
+extern void  filelistbox_translate_event ( p_object o, p_event event );
 
-p_filelistbox box1 = NULL;
+p_filelistbox box1   = NULL;
 p_view        imager = NULL;
-p_scroller    sc = NULL;
+p_scroller    sc     = NULL;
 
 p_list get_imager_filelist ( void );
 
@@ -175,31 +164,22 @@ l_dword dcfilelistbox_file_menu ( p_filelistbox o )
 
 l_bool  make_image ( l_text filename )
 {
-    if ( image ) destroy_bitmap(image);
+    if ( VIEW(imager)->brush.background )
+         destroy_bitmap(VIEW(imager)->brush.background);
 
-    image = NULL;
+    VIEW(imager)->brush.background = load_image(filename);
 
-    image = load_image(filename);
+    if ( VIEW(imager)->brush.background ) {
 
-    if ( image ) {
-
-
-      VIEW(imager)->brush.background = image;
-
-
-      VIEW(imager)->grow_view(VIEW(imager),rect_assign(0, 0, image->w, image->h));
+      VIEW(imager)->grow_view(VIEW(imager),rect_assign(0, 0, (VIEW(imager)->brush.background)->w, (VIEW(imager)->brush.background)->h));
 
       reset_scroller(SCROLLER(sc));
-      VIEW(sc)->draw_view(VIEW(sc));
+      TEST_SUB_VIEWS(VIEW(sc), VIEW(sc)->draw_view(VIEW(sc)););
       draw_scroller_bars(SCROLLER(sc));
 
 
     } else
     {
-
-    VIEW(imager)->brush.background = 0;
-
-    VIEW(sc)->draw_view(VIEW(sc));
 
     return false;
 
@@ -319,21 +299,12 @@ void  imager_scroll_size ( p_scroller o, l_long *x, l_long *y )
         {
 
          r = VIEW(imager)->get_local_extent(VIEW(imager));
-         if ( x ) *x = r.b.x+2;
-         if ( y ) *y = r.b.y+2;
+         if ( x ) *x = r.b.x;
+         if ( y ) *y = r.b.y;
 
 
         }
 
-      else
-        {
-
-         if ( x ) *x = 2000;
-         if ( y ) *y = 2000;
-
-        }
-
-  
 };
 
 
@@ -347,8 +318,8 @@ void  init_imager ( void )
 {
 
    t_rect r = rect_assign(0, 0, DC_SIZEX, DC_SIZEY);
-   t_rect t = r;
    t_rect s = r;
+   t_rect t = r;
 
 
 
@@ -356,7 +327,7 @@ void  init_imager ( void )
 
 
    p_dirhistory  dir1;
-   p_dirhistory  dir2;
+
 
    p_appwin o = appwin_init(_malloc(sizeof(t_appwin)), /* make window */
                             r,
@@ -371,36 +342,35 @@ void  init_imager ( void )
 
    VIEW(o)->size_minimum = &dc_size_minimum;
 
-   OBJECT(desktop)->insert(OBJECT(desktop), OBJECT(o)); /* insert it on the desktop */
-
    r = VIEW(o)->size_limits(VIEW(o));
+
+   OBJECT(desktop)->insert(OBJECT(desktop), OBJECT(o)); /* insert it on the desktop */      
 
    s = r = rect_assign(r.a.x+10, r.a.y+10, t.b.x-10, r.b.y-40);
 
-   r = rect_assign(r.a.x, r.a.y, r.a.x+(DC_SIZEX/2)-20, r.b.y);
+   r = rect_assign(r.a.x, r.a.y, r.a.x+(DC_SIZEX/2)-40, r.b.y);
 
    t = r;
 
    r.a.y += 30;
 
-   box1 = filelistbox_init(_malloc(sizeof(t_filelistbox)), r, 2, LF_SELECTABLE|FL_OPEN, dc_standard_path1, "*.*", FA_ALL, NULL);
+   box1 = filelistbox_init(_malloc(sizeof(t_filelistbox)), r, 1, FL_OPEN, STANDARD_PATH, "*.*", FA_ALL, NULL);
 
    if ( box1 ) {
         /* redeclare translate event function */
         OBJECT(box1)->translate_event = &dcfilelistbox_translate_event;
 
         /* redeclare alignment of filelistbox 1 */
-        VIEW(box1)->align |= TX_ALIGN_BOTTOM;
+//        VIEW(box1)->align |= TX_ALIGN_BOTTOM;
 
         FILELISTBOX(box1)->file_menu = &dcfilelistbox_file_menu;
+
    };
 
-   r = rect_move(r, (DC_SIZEX/2)-10, 0);
+   OBJECT(o)->insert(OBJECT(o), OBJECT(box1)); /* insert it on the desktop */      
 
 
-
-
-
+    r = rect_move(r, (DC_SIZEX/2)-10, 0);
 
     sc = scroller_init(_malloc(sizeof(t_scroller)), r, SF_VERSCROLLBAR|SF_HORSCROLLBAR);
 
@@ -411,15 +381,16 @@ void  init_imager ( void )
 
     OBJECT(o)->insert(OBJECT(o), OBJECT(sc)); /* insert it on the desktop */
 
-    r = rect_assign(0, 0, 5000, 6000);
+    r = rect_assign(0, 0, 10, 10);
 
 
     imager = view_init(_malloc(sizeof(t_view)), r);
 
     OBJECT(sc)->insert(OBJECT(sc), OBJECT(imager)); /* insert it on the desktop */
+
+    VIEW(imager)->brush.state &= ~BRUSH_SELFIMG;    
     
-
-
+    make_image ("start.jpg");
 
 
    r = rect_assign(t.a.x, t.a.y, t.a.x+200, t.a.y+20);
@@ -427,11 +398,8 @@ void  init_imager ( void )
    /* make link for box1 */
    dir1 = dirhistory_init(_malloc(sizeof(t_dirhistory)), r, IO_TEXT_LIMIT, HF_REWRITEUNABLE, box1);
 
-   r = rect_assign(t.a.x+(DC_SIZEX/2)-10, r.a.y, DC_SIZEX-30, r.b.y);
-
-   OBJECT(o)->insert(OBJECT(o), OBJECT(box1)); /* insert it on the desktop */
-
    OBJECT(o)->insert(OBJECT(o), OBJECT(dir1)); /* insert it on the desktop */
+
 
 
 
@@ -485,9 +453,9 @@ app_begin ( void ) {
 
   if ( ap_process == AP_FREE ) {
 
-    if ( image ) destroy_bitmap(image);
+/*    if ( image ) destroy_bitmap(image);
 
-    image = NULL;
+    image = NULL;*/
 
   };
 
