@@ -1,0 +1,76 @@
+BUILDING SEAL
+=============
+
+To build SEAL, you need the following:
+
+- DJGPP 2.03 (with gcc 2.95.3 or a similar version)
+  http://www.delorie.com/djgpp/
+
+  SEAL does not currently build with gcc 3.x.
+
+- Allegro 4.0.1 or better
+  http://alleg.sourceforge.net/
+
+  If using a different version, you MUST download AllegTTF and rebuild it,
+  otherwise SEAL will crash on startup. You can get AllegTTF from
+  http://huizen.dds.nl/~deleveld/allegttf.htm. Also, you must recreate the
+  src/allegro.exp file. Use the GENEXP tool in the genexp directory to do
+  this. Copy allegro/lib/mingw32/allegro.def to the genexp directory, then
+  run GENEXP.EXE. Finally, copy the generated allegro.exp to src/allegro.exp.
+
+To build SEAL, change directory into your SEAL root directory, and type
+make. This will build the XDL creation tools (dlxgen.exe, dlxinsd.exe and
+dlxmake.exe), and then will build the SEAL kernel (bin/seal.exe). Finally,
+the SEAL applications and libraries (*.S2A and *.XDL) will be built.
+
+TO BUILD A SEAL APPLICATION
+===========================
+
+To build a SEAL application, do the following:
+
+1. Compile the source code with the following command:
+
+      gcc -Iinclude -c yourapp.c -o yourapp.o
+
+   (where 'include' is the path to your SEAL2\include directory)
+
+   Repeat this for as many source files as you have, with whatever
+   parameters you require.
+
+2. Type the following to create an XDL or S2A file:
+
+      dlxgen yourapp.xdl yourapp.o yourapp2.o yourlib.a
+
+   If you want to compress the generated file (recommended), use the following
+   command:
+
+      dlxgen -Cyourapp.xdl yourapp.o yourapp2.o yourlib.a
+
+   If you are creating a library which will be called from other applications,
+   the recommended extension to use is XDL. If you are creating an application,
+   the extension you should use is S2A. There are no technical differences
+   between the two though.
+
+3. If you have an Allegro datafile which you wish to append to the XDL file,
+   type the following command:
+
+      dlxinsd yourapp.xdl yourapp.dat
+
+See the API documentation available at http://sealsystem.sourceforge.net/ for
+information on how to write SEAL applications.
+
+REBUILDING THE REGISTRY
+=======================
+
+If, for some reason, you need to rebuild the SEAL registry, do the following:
+
+1. Change directory to the SEAL2\bin directory.
+
+2. Delete REGISTRY.DAT.
+
+3. Type the following command:
+
+      regedit doreg.reg
+
+   This will import the default registry settings back into the registry. You will lose
+   any customisations you have made to the SEAL interface.

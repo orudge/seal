@@ -1,0 +1,37 @@
+NOTES ABOUT SEALDOS.S2A
+=======================
+
+IMPORTANT:
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+*********************************************************************
+SEALDOS.S2A is a program that lets you run DOS application under
+SEAL. It unloads most of SEAL's drivers (keyboard, mouse, sound,
+etc) in case a DOS application wants to use them. Without removing
+the keyboard driver, you cannot type anything in a DOS program,
+for example. It then finds the application's path and chdirs to it,
+then starts the program. When the program terminates, it displays
+a short message then switches back to SEAL after reloading the
+drivers.
+
+In some cases, the system may freeze when you return to SEAL,
+depending what applications you have run. (This hasn't happened much
+with my latest builds). I AM NOT REPONSIBLE FOR ANY DAMAGES INCURRED
+AS THE RESULT OF USING THIS PROGRAM. This isn't a very nice program
+in some ways - it's a bit of a hack, but it works (most of the time).
+
+Owen Rudge
+23rd September 2001

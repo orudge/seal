@@ -1,0 +1,86 @@
+;
+; SEAL Installer version 2.0 - Copyright (c) 2000, 2001 Kostas Michalopoulos
+;
+; This script contains information about install SEAL on a local hard disk.
+; Feel free to change this script to suit your needs or to make your own
+; distribution, but note that currently there isn't any other documentation
+; for this script, except the comments included there. Please keep the comments
+; unchanged if you change the script in order for other people to change your
+; script if they want.
+;
+;                                                      Kostas Michalopoulos
+;
+
+;
+; Set some global variables for easy script updating
+;
+Program: "SEAL"
+Version: "2.00.11"
+SubVersion: ""
+Product: $Program " " $Version
+
+EXEFile: "SEAL"
+
+DefaultDestinationPath: "C:\SEAL2"
+SourcesSubFolder: "SOURCES"
+
+MainBinaryFiles: "SEAL2.BAR"
+;InstallerSources: "INSTSRC.BAR"
+
+;
+; This changes title to the given one
+;
+Title: $Product " Installer version " $__Version " " $__Copyright
+
+;
+; These changes the contents of first four lines in the opening screen
+;
+Line1: "  This will install " $Product " on your system. This package includes"
+Line2: "  everything you need to use SEAL, a powerful and friendly GUI for DOS."
+Line3: ""
+Line4: ""
+
+;
+; This will change the contents of the bottom line of the opening screen
+;
+BottomLine: "You must agree with the above licence in order to install and use " $Product
+
+;
+; This will set the binaries items list. Separate each item with `|'. The
+; first item means "nothing to be installed", and should be equal to
+; "Nothing".
+;
+BinariesList: "Nothing|" $Product
+
+;
+; The same for sources list
+;
+SourcesList: "Nothing"
+;|Installer"
+
+;
+; This will set the files for each item in binaries list. Each file must
+; be a BAR file (installer doesn't understand any other archive fileformat).
+; Note: if you specify a file that doesn't exist or is invalid, the installer
+; will just ignore it. So, for the "nothing" option, we specify an invalid
+; file.
+;
+BinariesFiles: "(none)|" $MainBinaryFiles
+
+;
+; The same for sources...
+;
+SourcesFiles: "(none)"
+;|" $InstallerSources
+
+;
+; These will set captions and paths for the 'select installation path'-part
+;
+DestinationPath: $DefaultDestinationPath
+DestinationPathForSources: $DefaultDestinationPath "\" $SourcesSubFolder
+
+;
+; This will set the message which will be displayed after install success
+;
+SuccessMessage: $Product " installation finished. Type `" $EXEFile "' to run it."
+

@@ -1,0 +1,15 @@
+[btup]
+bmp="skin/btup2.bmp"
+ax=6
+ay=5
+by=7
+bx=7
+text="0,0,0"
+
+[btdown]
+bmp="skin/btdown2.bmp"
+ax=7
+ay=6
+by=6
+bx=6
+text="255,255,255"

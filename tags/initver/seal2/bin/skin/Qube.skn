@@ -1,0 +1,56 @@
+# a Qube Button Style for Seal2 by Phil Harper
+
+[btup]
+bmp="skin/qubeskn/qbtnv.bmp"
+ax=5
+ay=5
+by=7
+bx=7
+text="0,0,0"
+
+[btnotover]
+bmp="skin/qubeskn/qbbtn.bmp"
+ax=5
+ay=5
+by=7
+bx=7
+text="0,0,0"
+
+[btdown]
+bmp="skin/qubeskn/qbtndn.bmp"
+ax=6
+ay=6
+by=6
+bx=6
+text="255,255,255"
+
+[window_body]
+ax=6
+ay=6
+by=6
+bx=6
+bmp="skin/qubeskn/back.bmp"
+
+[window]
+bmp="skin/qubeskn/top_pass.bmp"
+ax=2
+ay=2
+by=2
+bx=2
+
+[window_passive]
+bmp="skin/qubeskn/top.bmp"
+ax=2
+ay=2
+by=2
+bx=2
+text="255,255,255"
+
+
+# © Phil Harper 2002
+# http://www.geocities.com/pipthewomble
+# philharper@hotmail.com
+
+# Portions © Lukas Lipka 2002
+# http://gigasoft.host.sk
+# i_man@inmail.sk
