@@ -1472,14 +1472,23 @@ l_bool     obj_select_data ( p_object o, l_int data_style, l_bool set )
 
 
 
-t_object* dispose ( t_object *o )
+t_object* dispose ( t_object *o )  // fixed flox 28.04.2001
 {
 
-  if ( o && o->done(o) )
+  if ( o )
+     {
+     if (o->done(o))
+        {
+        if (o) 
+           {
+           _free(o);
+           o = NULL;
+           }
+        }
 
-     _free(o);
+     }
 
-  return NULL;
+  return o;
 
 };
 
@@ -1495,7 +1504,7 @@ void  dispose_all ( t_object *o )
       if ( l ) /* if there is sub object */
       do {
          t_object *v = l->next;
-         l->done(l);
+         if (l) l->done(l); // fixed flox 28.04.2001
          l = v;
       } while ( o->last );
 
