@@ -154,7 +154,7 @@ extern l_color  pal_textline[];
 /*
 
    palette of stattext object :
-   ----------------------------
+   -----------------------------
 
    standard colors from Seal.ini file, from section [colors] :
 
@@ -889,6 +889,19 @@ extern p_textline  (*worktextline_init) ( p_textline o, t_rect r, l_int limit );
 
 t_rect worktextline_size_limits ( p_view o );
 void   worktextline_draw ( p_view o );
+
+/* t_dyntext */
+
+/*
+ create new textline, that is not pushed down and not rewriteable.
+ Like stattext but you can change the text like in an textline with
+ set_text and you can select it (copy funktion)!
+*/
+
+p_textline   _dyntext_init ( p_textline o, t_rect r, l_int limit );
+extern p_textline  (*dyntext_init) ( p_textline o, t_rect r, l_int limit );
+
+void   dyntext_draw ( p_view o );
 
 
 /* t_stattext */

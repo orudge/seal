@@ -1082,7 +1082,7 @@ int  _gr_setmode ( int _s, int _w, int _h, int _v_w, int _v_h, char _depth )
 };
 
 static void *_load_font ( char *_filename, char *xxname, int w, int h, int from, int to ) {
-  grx_loadfont(_filename, w, h);
+  return grx_loadfont(_filename, w, h);
 };
 
 

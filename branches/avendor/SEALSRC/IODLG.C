@@ -40,6 +40,7 @@
 #include<dir.h>
 #include<dos.h>
 #include<unistd.h>
+#include <io.h>
 
 
 static DATAFILE *datfile = NULL;
@@ -608,7 +609,7 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
   p_list p = list_init(_malloc(sizeof(t_list)), &free_filelistbox_item, 0);
   p_item l = NULL;
   l_text fi = NULL;
-  BITMAP *icon;
+  BITMAP *icon = NULL;
 
   if ( p ) {
 
@@ -624,13 +625,14 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
 
          attrib |= FA_LINKDIR;
 
-         fi = io_realpath(path, "*.*"); /* insert string "path"/*.* to fi */
+         fi = io_realpath(path, "*.*");
+         //insert string "path"/*.* to fi
 
          done = io_findfirst(fi, &f, FA_DIREC); /* looking for directories */
 
          _free(fi);
 
-         while ( !done ) { /* file found */
+         _while ( !done ) { /* file found */
 
             l_int mem = 0;
 
@@ -640,7 +642,7 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
 
             icon = get_icon_for_file_ex(fi, f.info.ff_attrib, &mem, isize);
 
-            if ( f.ff_filename && f.info.ff_attrib & FA_DIREC && stricmp(f.ff_filename, ".")
+            if ( f.ff_filename && (f.info.ff_attrib & FA_DIREC) && stricmp(f.ff_filename, ".")
                  && *(f.ff_filename) &&
                  (stricmp(f.ff_filename, "..") || !(attrib & FA_NOTPARENT))
                )  { /* OK it found direcory */
@@ -670,7 +672,9 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
 
          l = p->last;
 
-     };
+     }
+     
+     else return NULL;
 
      attrib &= ~FA_DIREC;
 
@@ -679,13 +683,14 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
 
      if ( attrib & FA_LINKDIR ) {
 
-         fi = io_realpath(path, "*.*"); /* insert string "path"/*.* to fi */
+         fi = io_realpath(path, "*.*");
+         //insert string "path"/*.* to fi
 
          done = io_findfirst(fi, &f, FA_LINKDIR); /* looking for files */
 
          _free(fi);
 
-         while ( !done ) { /* file found */
+         _while ( !done ) { /* file found */
 
             l_int mem = 0;
 
@@ -736,7 +741,7 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
 
          _free(fi);
 
-         while ( !done ) {
+         _while ( !done ) {
 
             p_filelistbox_item fileitem;
 
@@ -783,6 +788,7 @@ p_list get_listbox_item_dirfiles ( l_text path, l_text files, l_int attrib, l_in
      };
 
   };
+
 
   return p;
 };
@@ -848,12 +854,14 @@ void  free_filelistbox_item ( void *o )
 
    if ( o ) {
 
-      _free(((p_filelistbox_item)o)->info.filename);
-      _free(((p_filelistbox_item)o)->info.path);
+      if (((p_filelistbox_item)o)->info.filename) _free(((p_filelistbox_item)o)->info.filename);
+      if (((p_filelistbox_item)o)->info.path) _free(((p_filelistbox_item)o)->info.path);
+
+      free_listbox_item(o);
 
    };
 
-   free_listbox_item(o);
+
 
 };
 
@@ -1610,7 +1618,7 @@ l_int   filelistbox_file_handle_ex ( p_filelistbox o, l_text opath, l_text ofile
 
          o->load_list(o, io_linkedpath(path), o->file);
 
-         _free(path);
+         if (path) _free(path);
 
          return 2;
 
@@ -1624,6 +1632,8 @@ l_int   filelistbox_file_handle_ex ( p_filelistbox o, l_text opath, l_text ofile
               l_text path = io_parentdir(opath);
 
               o->load_list(o, path, ofile);
+
+              if (path) _free(path);
 
               return 2;
 
@@ -1667,6 +1677,7 @@ l_dword filelistbox_file_menu ( p_filelistbox o )
 {
 
   p_filelistbox_item item = NULL;
+  p_menu p = NULL;
 
   item = LISTBOX_ITEM_AT(LISTBOX(o)->list, LISTBOX(o)->current);
 
@@ -1674,7 +1685,7 @@ l_dword filelistbox_file_menu ( p_filelistbox o )
 
       l_int fatr = item->info.attrib;
 
-      p_menu p = new_menu(
+      p        = new_menu(
 
                  new_menu_item_ex(TXT_OPEN, NULL, 0, MSG_OK, true,
                                   TXT_INFOOPEN, MIF_NONE, font_system_bd, NULL, NULL, 0,
@@ -1856,6 +1867,7 @@ void  filelistbox_load_list ( p_filelistbox o, l_text path, l_text file )
 
       };
 
+
   } else seal_error(ERR_INFO, "%s %s %s", TXT_PATH, path, strlwr(TXT_NOTFOUND));
 
 };
@@ -1919,19 +1931,20 @@ void    dirhistory_load_list ( p_dirhistory o, l_text path )
 
    if ( path ) {
 
-       p_list   p;
-       p_drives d;
-       l_text   drvname;
+       p_list   p = NULL;
+       p_drives d = NULL;
+       l_text   drvname = NULL;
 
        if ( HISTORY(o)->list )
 
              dispose_list ( &(HISTORY(o)->list), true );
 
-       p = HISTORY(o)->list = list_init(_malloc(sizeof(t_list)), &free_filelistbox_item, 0);
+       HISTORY(o)->list = list_init(_malloc(sizeof(t_list)), &free_filelistbox_item, 0);
+       p = HISTORY(o)->list;
 
        drvname = drv_findfirst(&d);
 
-       while ( d ) {
+       _while ( d ) {
 
            if ( drvname ) { /* if drive exist */
 
@@ -2474,8 +2487,10 @@ lib_begin ( void ) {
 
   if ( ap_process == AP_FREE ) {
 
-    unload_datafile(datfile);
-    datfile = NULL;
+    if (datfile) {
+       unload_datafile(datfile);
+       datfile = NULL;
+    };
 
   };
 

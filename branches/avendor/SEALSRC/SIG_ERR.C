@@ -115,13 +115,13 @@ void signal_init ( void )
    LOCK_FUNCTION(signal_error);
 
    /* set signals function */
-   old_sig_abrt = signal(SIGABRT, signal_error);
-   old_sig_fpe  = signal(SIGFPE,  signal_error);
-   old_sig_ill  = signal(SIGILL,  signal_error);
-   old_sig_segv = signal(SIGSEGV, signal_error);
-   old_sig_term = signal(SIGTERM, signal_error);
+//   old_sig_abrt = signal(SIGABRT, signal_error);
+//   old_sig_fpe  = signal(SIGFPE,  signal_error);
+//   old_sig_ill  = signal(SIGILL,  signal_error);
+//   old_sig_segv = signal(SIGSEGV, signal_error);
+//   old_sig_term = signal(SIGTERM, signal_error);
    old_sig_int  = signal(SIGINT,  signal_error);
-   old_sig_kill = signal(SIGKILL, signal_error);
+//   old_sig_kill = signal(SIGKILL, signal_error);
    old_sig_quit = signal(SIGQUIT, signal_error);
 };
 

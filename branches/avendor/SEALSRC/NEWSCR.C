@@ -35,9 +35,11 @@ GFX_VTABLE *oldscreenvtable = NULL;
 GFX_VTABLE  newscreenvtable;
 
 int  sd_getpixel(struct BITMAP *bmp, int x, int y) {
+  int i;
   _drawing_in_screen++;
-  oldscreenvtable->getpixel(bmp, x, y);
+  i = oldscreenvtable->getpixel(bmp, x, y);
   _drawing_in_screen--;
+  return i;
 };
 
 void sd_putpixel(struct BITMAP *bmp, int x, int y, int color)

@@ -43,6 +43,7 @@ l_color  pal_textline[] = {CO_WHITE, CO_SYSx20, CO_BLACK, CO_BLUE, CO_WHITE, CO_
 l_color  pal_listbox[] = {CO_WHITE, CO_SYSx20, CO_BLACK, CO_BLUE, CO_WHITE, CO_RED, CO_BLUE, CO_BLUE, CO_WHITE, CO_NOCOLOR};
 l_color  pal_process[] = {CO_WHITE, CO_BLACK, CO_BLACK, CO_WHITE, CO_NOCOLOR};
 
+
 p_stattext (*stattext_init_ex) ( p_stattext o, t_rect r, l_int align, l_text text, va_list argp ) = &_stattext_init_ex;
 p_stattext (*stattext_init) ( p_stattext o, t_rect r, l_int align, l_text text, ... ) = &_stattext_init;
 
@@ -52,6 +53,7 @@ p_listbox   (*listbox_init) ( p_listbox o, t_rect r, p_list list, l_byte cells, 
 p_listbox   (*worklistbox_init) ( p_listbox o, t_rect r, p_list list, l_byte cells, l_int flags ) = &_worklistbox_init;
 p_textline  (*textline_init) ( p_textline o, t_rect r, l_int limit, l_int flags ) = &_textline_init;
 p_textline  (*worktextline_init) ( p_textline o, t_rect r, l_int limit ) = &_worktextline_init;
+p_textline  (*dyntext_init) ( p_textline o, t_rect r, l_int limit ) = &_dyntext_init;
 
 
 /* t_process functions */
@@ -510,10 +512,11 @@ void   listbox_translate_event ( p_object o, t_event *event )
          p_listbox_item p = (p_listbox_item)LISTBOX_ITEM_AT(LISTBOX(o)->list, mpos);
 
          if ( p )
-
+            {
             if ( LISTBOX(o)->shift_flag & 0x04 ) p->sel = false;
             else
             if ( LISTBOX(o)->shift_flag & 0x02 ) p->sel = true;
+            }
 
        };
 
@@ -1122,6 +1125,8 @@ t_rect worklistbox_size_limits ( p_view o )
 };
 
 
+
+
 void  worklistbox_draw ( p_view o )
 {
 
@@ -1198,7 +1203,7 @@ void  textline_set_state ( p_object o, l_dword st, l_bool set )
 
   if ( st & OB_SF_SELECTED ) {
 
-    if ( set || o->owner && o->owner->is_state(o->owner, OB_SF_SELECTED) ) {
+    if ( (set || o->owner) && o->owner->is_state(o->owner, OB_SF_SELECTED) ) {
 
        TEXTLINE(o)->sel_all(TEXTLINE(o), 0, 0);
 
@@ -1455,7 +1460,7 @@ l_bool textline_set_text ( p_textline o, l_text text )
 
   l_bool ret = false;
 
-  _free(o->text);
+  if (o->text) _free(o->text);
 
   if ( text ) {
 
@@ -1911,6 +1916,41 @@ void  textline_draw_text ( p_textline o )
 
 };
 
+/* for dyntext */
+
+void  dyntext_draw_text ( p_textline o )
+{
+  p_view  vo = VIEW(o);
+  t_point p;
+  t_rect  r = vo->size_limits(vo);
+  t_rect  safe = r;
+
+
+  BITMAP *out = vo->begin_paint(vo, &p, r);
+
+  if ( out ) {
+
+    l_color fcolor = vo->get_color(vo, 1);
+
+    r = rect_move(r, p.x, p.y);
+
+    vo->background(vo, out, r);    
+
+    if ( !is_wable(o) ) /* is not-rewrite able */
+
+       sel_clear(o);
+
+    draw_selected_text (out, vo->font, &(o->text[o->line]), -1, max(0, o->sel_from-o->line), max(0, o->sel_to-o->line),
+                        r.a.x, r.a.y, r.b.x, r.b.y, (o->flags & TF_ALIGN_RIGHT)?TX_ALIGN_RIGHT:TX_ALIGN_LEFT,
+                        fcolor, TX_NOCOLOR, fcolor, TX_NOCOLOR, 1);
+
+  };
+
+  vo->end_of_paint(vo, safe);
+
+};
+
+
 
 void  textline_redraw_text ( p_textline o, l_int newpos, l_int keycode )
 {
@@ -2035,7 +2075,8 @@ void  textline_redraw_text ( p_textline o, l_int newpos, l_int keycode )
 
   };
 
-  if ( o->pos != oldpos || redraw_text )
+  if ( o->pos != oldpos || redraw_text ) {
+
 
     if ( o->pos < o->line ) {
 
@@ -2053,7 +2094,8 @@ void  textline_redraw_text ( p_textline o, l_int newpos, l_int keycode )
       can_draw_cursor = false;
 
     };
-
+    
+  };
 
   if ( redraw_text ) {
 
@@ -2081,6 +2123,15 @@ t_rect worktextline_size_limits ( p_view o )
 
 };
 
+/* dyntext */
+
+t_rect dyntext_size_limits ( p_view o )
+{
+
+  return rect_assign(0, 0, rect_sizex(o->bounds), rect_sizey(o->bounds));
+
+};
+
 
 void  worktextline_draw ( p_view o )
 {
@@ -2100,6 +2151,16 @@ void  worktextline_draw ( p_view o )
   };
 
   o->end_of_paint(o, r);
+
+};
+
+/* dyntext */
+
+void  dyntext_draw ( p_view o )
+{
+
+    TEXTLINE(o)->draw_text(TEXTLINE(o));
+
 
 };
 
@@ -2469,12 +2530,36 @@ p_textline  _worktextline_init ( p_textline o, t_rect r, l_int limit )
   return o;
 };
 
+/* dyntext */
+
+p_textline  _dyntext_init ( p_textline o, t_rect r, l_int limit )
+{
+
+  if ( !o ) return NULL;
+
+  textline_init(o, r, limit, TF_REWRITEUNABLE);
+
+  /* retype draw */
+  o->draw_text = &dyntext_draw_text;
+  VIEW(o)->draw = &dyntext_draw;
+  VIEW(o)->size_limits = &dyntext_size_limits;
+  
+  VIEW(o)->set_palette(VIEW(o), pal_stattext);
+  
+  VIEW(o)->brush.color = VIEW(o)->get_color(VIEW(o), 0);
+
+
+
+
+  return o;
+};
+
 
 /* stattext */
 
 p_stattext _stattext_init_ex ( p_stattext o, t_rect r, l_int align, l_text text, va_list argp )
 {
-  static l_char buffer[256];
+
 
   if ( !o || !text ) return NULL;
 
@@ -2540,6 +2625,8 @@ lib_begin ( void ) {
           pal_stattext[0] = color_get_from_ini("3D_background");
           pal_stattext[1] = color_get_from_ini("text");
 
+          
+
           pal_textline[0] = color_get_from_ini("text_input_background");
           pal_textline[1] = color_get_from_ini("text_input_disable_background");
           pal_textline[2] = color_get_from_ini("text_input_foreground");
@@ -2547,6 +2634,8 @@ lib_begin ( void ) {
           pal_textline[4] = color_get_from_ini("text_input_foreground_select");
           pal_textline[5] = color_get_from_ini("text_input_nowrite_background_select");
           pal_textline[6] = color_get_from_ini("text_input_nowrite_foreground_select");
+
+
 
           pal_listbox[0] = color_get_from_ini("text_input_background");
           pal_listbox[1] = color_get_from_ini("text_input_disable_background");
