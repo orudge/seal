@@ -30,7 +30,7 @@
 /*                                                              */
 /****************************************************************/
 
-
+#include"seal.h"
 #include"object.h"
 #include"list.h"
 #include<string.h>

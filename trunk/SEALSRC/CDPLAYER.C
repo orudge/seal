@@ -238,7 +238,7 @@ static void bcd_play_to_end ( l_int track)
 
    bcd_get_track_address(track, &start, &len);
 
-   while ( t > track ) {
+   _while ( t > track ) {
 
       l_int l;
       l_int s;
@@ -267,7 +267,7 @@ static void bcd_play_ff_or_re ( signed int ff_re)
 
    bcd_get_track_address(cur_track, &start, &len);
 
-   while ( t > cur_track ) {
+   _while ( t > cur_track ) {
 
       l_int l;
       l_int s;
@@ -567,9 +567,9 @@ static l_int get_track ( l_text args )
      l_text s;
      l_int  i = 0;
 
-     while ( *x && *x < '0' || *x > '9' ) x++;
+     _while ( *x && *x < '0' || *x > '9' ) x++;
      args = x;
-     while ( *x && *x >= '0' && *x <= '9' ) x++;
+     _while ( *x && *x >= '0' && *x <= '9' ) x++;
 
      s = stridup(args, strsize(args, x));
 

@@ -35,6 +35,7 @@
 #include <bios.h>
 #include <time.h>
 #include <stdarg.h>
+#include <ctype.h>
 #include"object.h"
 #include"safmem.c" /* important */
 #include"filter.c" /* important */
@@ -56,7 +57,8 @@ t_event   event_main;
 l_bool    go_process = true;
 
 
-t_rect rect_empty = {-0xFFFF, -0xFFFF, -0xFFFF, -0xFFFF};
+//t_rect rect_empty = {-0xFFFF, -0xFFFF, -0xFFFF, -0xFFFF}; fixed florianx
+t_rect rect_empty = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
 
 t_data  clipboard;
 
@@ -773,6 +775,8 @@ p_object obj_find_match_view ( p_object o, l_dword sta, l_dword opt, l_bool forw
 p_object  obj_call_trans_events ( p_object o, l_dword st, l_dword op )
 {
 
+return NULL;
+
 };
 
 
@@ -926,6 +930,8 @@ int        obj_put_into_stillprocess ( p_object o, p_object s )
 
   o->put_into_stillprocess(o, s);
 
+  return 0;
+
 };
 
 
@@ -934,6 +940,8 @@ int        obj_clear_from_stillprocess ( p_object o, p_object s )
   if ( o->owner ) o = o->owner;
 
   o->clear_from_stillprocess(o, s);
+
+  return 0;
 
 };
 
