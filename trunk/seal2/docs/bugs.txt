@@ -1,0 +1,9 @@
+KNOWN BUGS
+==========
+
+- SEAL can crash a bit too often sometimes
+
+- The Disk Imager doesn't work properly for me (Owen Rudge).
+  It created a 720kb image from a 1.44mb disk...
+
+- Some visual glitches with skinning
