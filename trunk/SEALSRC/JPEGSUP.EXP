@@ -1,0 +1,10 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(jpeg_load_ex) 
+    LIBEXPORT(jpeg_save_ex) 
+    LIBEXPORT(jpeg_load) 
+    LIBEXPORT(jpeg_save) 
+  LIBEXPORT_END
+DLXUSE_END
