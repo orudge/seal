@@ -120,9 +120,13 @@ app_begin ( void ) {
     p_textline stat1 = 0;
     char file[260];
 
-    AP_SETNUMOFCALLS(1);    
+    AP_SETNUMOFCALLS(1);
 
-    pp = SFA_init();
+
+    if (get_sound_installed() == false);
+    // dummy, this program don't start if dlxsound hasn't loaded before
+
+
 
 
 
@@ -132,12 +136,16 @@ app_begin ( void ) {
 
     strcpy(file, ap_args);
 
-     play(file);
+    pp = SFA_init();
 
-     r = rect_assign(0, 0, 300, 100);
+    
+
+    play(file);
+
+    r = rect_assign(0, 0, 400, 100);
 
 
-     o = appwin_init(malloc(sizeof(t_appwin)), /* make window */
+    o = appwin_init(malloc(sizeof(t_appwin)), /* make window */
                             r,
                             "sfa player .05 beta",
 //                            ap_args,
@@ -156,16 +164,16 @@ app_begin ( void ) {
 					 r, 
 					 TX_ALIGN_LEFT, // limit
 					 "Playing %s ...\n%s",
-                (l_text) ap_args,
-                pp->get_additional_info(pp));
+                (char *) get_filename(ap_args),
+                (char *) pp->get_additional_info(pp));
 
-
+     OBJECT(stat)->func_callback = &poll_func_callback;
      OBJECT(o)->insert(OBJECT(o), OBJECT(stat));
 
 
-//     OBJECT(desktop)->process_tick = 200; /* each second rewrite it */
-     OBJECT(desktop)->func_callback = &poll_func_callback;
-     init_stillprocess ( OBJECT(desktop), 20 );
+//     OBJECT(stat)->process_tick = 20; /* each second rewrite it */
+
+     init_stillprocess ( OBJECT(stat), 100 );
 
      
       r = rect_assign(10, 70, 190, 90);

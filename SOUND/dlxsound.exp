@@ -37,6 +37,7 @@ DLXUSE_BEGIN
     LIBEXPORT(sound_input_installed) 
     LIBEXPORT(count_player) 
     LIBEXPORT(sound_format_list) 
-    LIBEXPORT(seal_volume) 
+    LIBEXPORT(seal_volume)
+    LIBEXPORT(get_sound_installed)
   LIBEXPORT_END
 DLXUSE_END

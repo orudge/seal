@@ -57,11 +57,27 @@ p_soundformat_item  new_soundformat_item(   l_text extension,
 p_list sound_format_list;
 
 
-/**[txh]**********************************************************************
+     /**[txh]**********************************************************************
      
-      Function: new_soundformat_item
+      Function:p_soundformat_item  new_soundformat_item(   l_text extension,
+                                            l_text info,
+                                            l_int (*init_file) (p_soundformat_item o, l_text file),
+                                            l_int (*play_file) (p_soundformat_item o),
+                                            l_int (*poll_file)(p_soundformat_item o),                                            
+                                            l_int (*stop_file)(p_soundformat_item o),
+                                            l_int (*pause_file)(p_soundformat_item o),
+                                            l_int (*forward_file)(p_soundformat_item o, l_int relpos),
+                                            l_int (*rewind_file)(p_soundformat_item o, l_int relpos),
+                                            l_int (*set_pos)(p_soundformat_item o, l_int pos),
+                                            l_int (*get_pos)(p_soundformat_item o),
+                                            l_int (*get_len_file)(p_soundformat_item o),
+                                            l_int (*get_time)(p_soundformat_item o),
+                                            l_int (*is_stereo)(p_soundformat_item o),
+                                            l_text (*get_additional_info)(p_soundformat_item o)
+                                            )
 
-      Description: for a library: Stores all funktions in a list
+
+      Description: Stores all funktions in a list
      
       Return: p_soundformat_item
       Example:       p_soundformat_item k = new_soundformat_item(("mp3"),
@@ -83,7 +99,9 @@ p_list sound_format_list;
 
            sound_format_list->insert(sound_format_list, k);
 
-*****************************************************************************/
+     
+     *****************************************************************************/
+
 
 p_soundformat_item  new_soundformat_item(   l_text extension,
                                             l_text info,
@@ -255,17 +273,6 @@ void  free_soundformat_item ( void *o )
 //  while (ex->poll());
 //
 
-     /**[txh]**********************************************************************
-     
-      Function: SFA_init
-
-      Description: for a player: Init SFA in a player. Must be executed before playing a file.
-     
-      Return: p_play
-      Example: p_play pp = SFA_init();
-     
-     *****************************************************************************/
-
 
 
 p_play SFA_init()
@@ -299,9 +306,32 @@ p_play SFA_init()
 }
 
 
+/*l_int sound_format_callback(void* ext, void* rec, l_dword ind)
+{
+
+seal_error(ERR_INFO, "%s", ((p_soundformat_item)rec)->extension);
+if (!strcmp( ((p_soundformat_item)rec)->extension, ext)) return false;
+ind++;
+return true;
+
+} */
+
+
+/*void search_right_extension()
+{
+
+l_dword ind = 0;
+
+sound_format_list->for_each_item(sound_format_list, "mp3", sound_format_callback, ind);
+
+seal_error(ERR_INFO, "%d", ind);
+
+
+} */
+
      /**[txh]**********************************************************************
      
-      Function: init_file
+      Function: l_int init_file (p_play o, l_text file)
 
       Description: Init the file
      
@@ -370,9 +400,9 @@ l_int init_file (p_play o, l_text file)
 
      /**[txh]**********************************************************************
      
-      Function: play_file
+      Function: l_int play_file (p_play o)
 
-      Description: for a player: plays the file (must be init)
+      Description: plays the file (must be init)
      
       Return: 0 if error
       Example: pp->play_file(pp)
@@ -392,9 +422,9 @@ l_int play_file (p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: poll_file
+      Function: l_int poll_file (p_play o)
 
-      Description: for a player: Must be called very often!
+      Description: Must be called very often!
      
       Return: 0 if file finished
       Example: file_is_playing = pp->poll_file(pp);
@@ -412,9 +442,9 @@ l_int poll_file (p_play o)
       
      /**[txh]**********************************************************************
      
-      Function: stop_file
+      Function: l_int stop_file(p_play o)
 
-      Description: for a player: stop playing the file
+      Description: stop playing the file
      
       Return:
       Example: pp->stop_file(pp);
@@ -433,9 +463,9 @@ l_int stop_file(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: pause_file
+      Function: l_int pause_file(p_play o)
 
-      Description: for a player: pauses the file
+      Description: pauses the file
      
       Return:
       Example: pp->pause(pp);
@@ -454,9 +484,9 @@ l_int pause_file(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: forward_file
+      Function: l_int forward_file(p_play o, l_int relpos)
 
-      Description: for a player: Set relative position (forward)
+      Description: Set relative position (forward)
      
       Return:
       Example: pp->forward_file(pp, 10);
@@ -475,9 +505,9 @@ l_int forward_file(p_play o, l_int relpos)
 
      /**[txh]**********************************************************************
      
-      Function: rewind_file
+      Function: l_int rewind_file(p_play o, l_int relpos)
 
-      Description: for a player: Set relative position (rewind)
+      Description: Set relative position (rewind)
      
       Return:
       Example: pp->rewind_file(pp, 10);
@@ -496,9 +526,9 @@ l_int rewind_file(p_play o, l_int relpos)
 
      /**[txh]**********************************************************************
      
-      Function: set_pos
+      Function: l_int set_pos(p_play o, l_int pos)
 
-      Description: for a player: Sets position in the file
+      Description: Sets position in the file
      
       Return:
       Example: pp->set_pos(pp, 1000);
@@ -517,9 +547,9 @@ l_int set_pos(p_play o, l_int pos)
 
      /**[txh]**********************************************************************
      
-      Function: get_pos
+      Function: l_int get_pos(p_play o)
 
-      Description: for a player: gets position
+      Description: gets position
      
       Return: position in the file
       Example: position = pp->get_position(pp);
@@ -538,9 +568,9 @@ l_int get_pos(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: get_len_file
+      Function: l_int get_len_file(p_play o)
 
-      Description: for a player: gets len of file
+      Description: gets len of file
      
       Return: len of file
       Example: len_of_file = pp->get_len_file(pp);
@@ -559,9 +589,9 @@ l_int get_len_file(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: get_info
+      Function: l_text     get_info(p_play o)
 
-      Description: for a player: get info of file (string), you can free it with _free();
+      Description: get info of file (string), you can free it with _free();
      
       Return: char * string;
       Example: l_text info = pp->get_info(pp);
@@ -582,9 +612,9 @@ l_text     get_info(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: get_time
+      Function: l_int     get_time(p_play o)
 
-      Description: for a player: gets current time in seconds
+      Description: gets current time in seconds
      
       Return: time in seconds
       Example: current_time = pp->get_time(pp);
@@ -604,9 +634,9 @@ l_int     get_time(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: is_stereo
+      Function: l_int     is_stereo(p_play o)
 
-      Description: for a player: is the file stereo, or mono?
+      Description: is the file stereo, or mono?
      
       Return: 1...stereo, 0...mono
       Example: file_stereo = pp->is_stereo(pp);
@@ -625,9 +655,9 @@ l_int     is_stereo(p_play o)
 
      /**[txh]**********************************************************************
      
-      Function: get_additional_info
+      Function: l_text   get_additional_info(p_play o)
 
-      Description: for a player: gets additional info (use _free() to free it)
+      Description: gets additional info (use _free() to free it)
      
       Return: char *, l_text
       Example: l_text add_info = pp->get_additional_info(pp);
@@ -648,11 +678,12 @@ l_text   get_additional_info(p_play o)
 
 l_int seal_volume = 255;
 l_int count_player = 0;
-l_int sound_input_installed = true;
+l_int sound_input_installed = false;
+l_int sound_installed = true;
 
      /**[txh]**********************************************************************
      
-      Function: get_sound_input_installed
+      Function: l_int get_sound_input_installed()
 
       Description:
      
@@ -669,12 +700,31 @@ return sound_input_installed;
 
      /**[txh]**********************************************************************
      
-      Function: inc_count_player
+      Function: l_int get_sound_installed()
+
+      Description:
+     
+      Return:  true if sound input is installed
+      Example:
+     
+     *****************************************************************************/
+
+
+l_int get_sound_installed()
+{
+return sound_installed;
+}
+
+
+
+     /**[txh]**********************************************************************
+     
+      Function: void inc_count_player()
 
       Description: If your player starts a file you have to call it.
      
       Return:
-      Example: inc_count_player();
+      Example:
      
      *****************************************************************************/
 
@@ -686,12 +736,12 @@ void inc_count_player()
 
      /**[txh]**********************************************************************
      
-      Function: dec_count_player
+      Function: void dec_count_player()
 
       Description: If your player stops playing a file you have to execute it.
      
-      Return:  void
-      Example: dec_count_player();
+      Return:
+      Example:
      
      *****************************************************************************/
 
@@ -703,7 +753,7 @@ void dec_count_player()
 
      /**[txh]**********************************************************************
      
-      Function: get_count_player
+      Function: l_int get_count_player()
 
       Description:
      
@@ -720,12 +770,12 @@ l_int get_count_player()
 
      /**[txh]**********************************************************************
      
-      Function: get_seal_volume
+      Function: l_int get_seal_volume()
 
       Description:
      
       Return: current volume (0...255)
-      Example: volume = get_seal_volume();
+      Example:
      
      *****************************************************************************/
 
@@ -737,12 +787,12 @@ return seal_volume;
 
      /**[txh]**********************************************************************
      
-      Function: set_seal_volume
+      Function: l_int set_seal_volume(l_int s_v)
 
       Description: you can set the sound volume (0...255)
      
-      Return: returns volume of seal
-      Example: set_seal_volume(255);
+      Return:
+      Example:
      
      *****************************************************************************/
 
@@ -759,25 +809,33 @@ set_volume(seal_volume,seal_volume);
 int  ff_walker(const char* path, const struct ffblk *ff)
      {
 
-       l_text temp;
-       if (stricmp("dlx", get_extension(path))) return 0;
 
 
-       temp = _strdup(ff->ff_name);
-
-
-       if (!strstr(temp, "sfa")) return 0;
-
-//       seal_error(ERR_INFO,"%s",path);
-
-       run_file(path);
-
-       _free(temp);
+       if (!stricmp("dlx", get_extension(path)) && !strnicmp(get_filename(path), "sfa", 3))
        
-       DEBUG_printf("Loaded SFA:");
+       {
+
+//       msgbox(MW_ERROR, MB_OK, "%s", path);
+
+
+       
+       if ( !run_file (path) )
+
+                     seal_error(ERR_INFO, "%s\n\n%s", "Cannot run file :(", path);
+
+
+       DEBUG_printf("\ndlxsound:");
+       DEBUG_printf(" Loaded SFA driver:");
        DEBUG_printf(path);
        DEBUG_printf("\n");
+
+
         
+       }
+
+
+
+
        
 /*       if (ff->ff_attrib & 1)
          printf("R");
@@ -803,7 +861,7 @@ int  ff_walker(const char* path, const struct ffblk *ff)
 
 void find_sfa(l_text path)
 {
-
+//            seal_error(ERR_INFO, "Try to run all files from: %s", path);
             __file_tree_walk(path, ff_walker);
             
 /*           if (errno)
@@ -830,7 +888,7 @@ lib_begin ( void ) {
 
       void *p;
       p_soundformat_item k;
-      l_text path;
+      l_text path = 0;
 //      p_play pp;
 //      p_stattext o = 0;
       t_rect r;
@@ -883,7 +941,8 @@ lib_begin ( void ) {
 
       if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, "") == -1)
           {
-          hide_info(p);          
+          hide_info(p);
+          sound_installed = false;
           seal_error(ERR_INFO, TXT_CANNOTINITSOUNDCARD, allegro_error);
           DEBUG_printf(allegro_error);
           return;
@@ -907,18 +966,18 @@ lib_begin ( void ) {
 
 
       // setting volume from seal.ini
-      seal_volume = (l_int *)getini_fromfile ( "seal.ini", "sound", "volume" );
+      seal_volume = *((unsigned int *)getini_fromfile ( "seal.ini", "sound", "volume" ));
       set_volume(seal_volume, seal_volume);
 
       DEBUG_printf("Sound init: volume set");
 
-      path = getini_fromfile (INI_MAINFILE, "paths", "main");
+      path = (char *)getini_fromfile (INI_MAINFILE, "paths", "main");
 
 
       find_sfa(path);
 
       hide_info(p);
-      _free(path);
+      if (path) _free(path);
 
 
   }
