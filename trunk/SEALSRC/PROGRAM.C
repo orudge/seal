@@ -475,11 +475,11 @@ static void  xx_screen_shot ( void )
 
 
 
-#define __DEBUG_FILE__ /* debug version */
+//#define __DEBUG_FILE__ /* debug version */
 
 /* main of seal */
 
-void main ( int argc, char **argv )
+int main ( int argc, char **argv )
 {
 
   ini_mainfile = strdup("seal.ini");
