@@ -1,0 +1,13 @@
+Games for SEAL 1.1
+
+Install notes
+-------------
+
+-> In "app.set"
+Add at the top <grfx.dlx>
+
+-> Copy files ...
+grfx.dlx -> c:\seal\
+tictactic.exe -> c:\seal\programs\games\
+laby.exe -> c:\seal\programs\games\
+solvor.exe -> c:\seal\programs\games\

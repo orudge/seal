@@ -1,0 +1,26 @@
+DLXUSE_BEGIN
+  LIBLOADS_BEGIN
+  LIBLOADS_END
+  LIBEXPORT_BEGIN
+    LIBEXPORT(icon_done) 
+    LIBEXPORT(icon_set_state) 
+    LIBEXPORT(icon_draw) 
+    LIBEXPORT(icon_translate_event) 
+    LIBEXPORT(button_done) 
+    LIBEXPORT(button_set_state) 
+    LIBEXPORT(button_set_options) 
+    LIBEXPORT(button_is_default) 
+    LIBEXPORT(button_translate_event) 
+    LIBEXPORT(button_draw_state) 
+    LIBEXPORT(button_draw) 
+    LIBEXPORT(icobutton_done) 
+    LIBEXPORT(icobutton_draw_state) 
+    LIBEXPORT(_icon_init) 
+    LIBEXPORT(_button_init) 
+    LIBEXPORT(_icobutton_init) 
+    LIBEXPORT(icon_init) 
+    LIBEXPORT(button_init) 
+    LIBEXPORT(icobutton_init) 
+    LIBEXPORT(pal_button) 
+  LIBEXPORT_END
+DLXUSE_END

@@ -1,0 +1,34 @@
+Documentation:
+==============
+
+To make an new documentation "sfa.htm" file from dlxsound.c
+you need SET-Editor (http://members.xoom.com/stropea/setedit.html).
+
+SOUND.FRT
+SOUND.EPR
+
+are used bei SET-Editor to make the documentation.
+You have to open the Project sound.epr in SET-Editor and then read the
+SDG documentation!
+
+For more questions email me.
+
+How to compile:
+===============
+
+Edit
+
+
+MSOUND.BAT
+
+and change the paths.
+I hope I can make a makefile in the future.
+
+You need libamp for sfamp3.c. Download it @ www.allegro.cc
+
+If you have ideas for the library, please email me!!
+====================================================
+
+Bye,
+florianx@drdos.org
+
